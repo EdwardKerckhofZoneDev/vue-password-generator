@@ -1,5 +1,5 @@
 <template>
-  <form @submit.prevent="generatePassword">
+  <form @submit.prevent="generatePassword" class="form-gen-password">
     <div class="form-group">
       <label for="passwordLength">Password length:</label>
       <input type="number" v-model="passwordLength" id="passwordLength" />
@@ -43,6 +43,17 @@
 
     <button type="submit">Generate Password</button>
   </form>
+
+  <div class="generated">
+    <form @submit.prevent="copyPassword" class="form-copy-password">
+      <p>Your newly generated password:</p>
+      <input type="text" v-model="createdPassword" id="createdPasswordId" />
+      <button type="submit" @mouseout="outFocus">
+        <span class="tooltiptext">{{ tooltipText }}</span
+        >Copy
+      </button>
+    </form>
+  </div>
 </template>
 
 <script lang="ts">
@@ -53,6 +64,8 @@ export default defineComponent({
 
   setup() {
     const passwordLength = ref(16)
+    const createdPassword = ref('')
+    const tooltipText = ref('Copy to clipboard')
 
     const includeSymbols = ref(true)
     const includeNumbers = ref(true)
@@ -115,8 +128,26 @@ export default defineComponent({
         passwordChars.push(String.fromCharCode(charCode))
       }
 
-      const password = passwordChars.join('')
-      console.log(password)
+      createdPassword.value = passwordChars.join('')
+    }
+
+    const copyPassword = () => {
+      if (createdPassword.value !== '') {
+        const textToCopy = document.getElementById(
+          'createdPasswordId',
+        ) as HTMLInputElement
+        textToCopy.select()
+        textToCopy.setSelectionRange(0, passwordLength.value + 1)
+        document.execCommand('copy')
+
+        tooltipText.value = 'Password coppied!'
+      } else {
+        tooltipText.value = 'No password to copy!'
+      }
+    }
+
+    const outFocus = () => {
+      tooltipText.value = 'Copy to clipboard'
     }
 
     return {
@@ -128,13 +159,17 @@ export default defineComponent({
       excludeAmbitious,
       savePreferences,
       generatePassword,
+      copyPassword,
+      createdPassword,
+      tooltipText,
+      outFocus,
     }
   },
 })
 </script>
 
 <style lang="scss" scoped>
-form {
+.form-gen-password {
   width: 70%;
   max-width: 800px;
   margin: 0 auto;
@@ -170,10 +205,82 @@ form {
     padding: 10px 0;
     border-radius: 20px;
     transition: all 0.2s ease;
+    outline: none;
 
     &:hover {
       background: $clr-primary;
       color: white;
+    }
+  }
+}
+
+div.generated {
+  width: 70%;
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: left;
+  margin-top: 40px;
+
+  form {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    p {
+      display: inline-block;
+      margin-right: 30px;
+    }
+
+    input {
+      flex: 1;
+      margin-right: 16px;
+      padding: 5px 8px;
+    }
+
+    button {
+      font-size: 15px;
+      padding: 5px 8px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      border-radius: 5px;
+      text-transform: uppercase;
+      position: relative;
+
+      &:hover {
+        .tooltiptext {
+          visibility: visible;
+          opacity: 1;
+        }
+      }
+
+      .tooltiptext {
+        visibility: hidden;
+        width: 140px;
+        background-color: #555;
+        color: #fff;
+        text-align: center;
+        border-radius: 6px;
+        padding: 5px;
+        position: absolute;
+        z-index: 1;
+        bottom: 150%;
+        left: 50%;
+        margin-left: -75px;
+        opacity: 0;
+        transition: opacity 0.3s;
+
+        &::after {
+          content: '';
+          position: absolute;
+          top: 100%;
+          left: 50%;
+          margin-left: -5px;
+          border-width: 5px;
+          border-style: solid;
+          border-color: #555 transparent transparent transparent;
+        }
+      }
     }
   }
 }

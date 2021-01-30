@@ -39,7 +39,7 @@ export default defineComponent({
 
   hr {
     width: 30%;
-    margin: 20px auto;
+    margin: 50px auto;
   }
 }
 </style>
