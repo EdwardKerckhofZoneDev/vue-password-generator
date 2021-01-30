@@ -9,8 +9,8 @@ import { defineComponent } from 'vue'
 import PasswordGenerator from './components/PasswordGenerator.vue'
 
 export default defineComponent({
-  components: { PasswordGenerator },
   name: 'App',
+  components: { PasswordGenerator },
 })
 </script>
 

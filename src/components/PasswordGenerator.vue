@@ -1,53 +1,53 @@
 <template>
-  <form @submit.prevent="generatePassword" class="form-gen-password">
+  <form class="form-gen-password" @submit.prevent="generatePassword">
     <div class="form-group">
       <label for="passwordLength">Password length:</label>
-      <input type="number" v-model="passwordLength" id="passwordLength" />
+      <input id="passwordLength" v-model="passwordLength" type="number" />
     </div>
 
     <div class="form-group">
       <label for="includeSymbols">Include Symbols (&@#$%):</label>
-      <input type="checkbox" v-model="includeSymbols" id="includeSymbols" />
+      <input id="includeSymbols" v-model="includeSymbols" type="checkbox" />
     </div>
 
     <div class="form-group">
       <label for="includeNumbers">Include Numbers (123456):</label>
-      <input type="checkbox" v-model="includeNumbers" id="includeNumbers" />
+      <input id="includeNumbers" v-model="includeNumbers" type="checkbox" />
     </div>
 
     <div class="form-group">
       <label for="includeLowerCase"
         >Include Lowercase Characters (abcdef):</label
       >
-      <input type="checkbox" v-model="includeLowerCase" id="includeLowerCase" />
+      <input id="includeLowerCase" v-model="includeLowerCase" type="checkbox" />
     </div>
 
     <div class="form-group">
       <label for="includeUpperCase"
         >Include Uppercase Characters (ABCDEF):</label
       >
-      <input type="checkbox" v-model="includeUpperCase" id="includeUpperCase" />
+      <input id="includeUpperCase" v-model="includeUpperCase" type="checkbox" />
     </div>
 
     <div class="form-group">
       <label for="excludeAmbitious"
         >Exclude Ambiguous Characters ({ } [ ] ( ) / \ ' " ` ~ , ; : .):</label
       >
-      <input type="checkbox" v-model="excludeAmbitious" id="excludeAmbitious" />
+      <input id="excludeAmbitious" v-model="excludeAmbitious" type="checkbox" />
     </div>
 
     <div class="form-group">
       <label for="savePreferences">Save My Preferences:</label>
-      <input type="checkbox" v-model="savePreferences" id="savePreferences" />
+      <input id="savePreferences" v-model="savePreferences" type="checkbox" />
     </div>
 
     <button type="submit">Generate Password</button>
   </form>
 
   <div class="generated">
-    <form @submit.prevent="copyPassword" class="form-copy-password">
+    <form class="form-copy-password" @submit.prevent="copyPassword">
       <p>Your newly generated password:</p>
-      <input type="text" v-model="createdPassword" id="createdPasswordId" />
+      <input id="createdPasswordId" v-model="createdPassword" type="text" />
       <button type="submit" @mouseout="outFocus">
         <span class="tooltiptext">{{ tooltipText }}</span
         >Copy
