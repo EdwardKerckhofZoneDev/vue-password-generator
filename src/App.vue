@@ -34,7 +34,7 @@ export default defineComponent({
   text-align: center;
   line-height: 1.4;
   letter-spacing: 0.5px;
-  color: #2c3e50;
+  color: $clr-primary;
   margin-top: 60px;
 
   hr {

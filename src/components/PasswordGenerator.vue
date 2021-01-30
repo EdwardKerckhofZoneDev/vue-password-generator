@@ -133,4 +133,48 @@ export default defineComponent({
 })
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+form {
+  width: 70%;
+  max-width: 800px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+
+  div.form-group {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+
+    label {
+      flex: 0 0 85%;
+    }
+    input {
+      text-align: right;
+    }
+    input[type='number'] {
+      width: 50px;
+    }
+  }
+
+  button[type='submit'] {
+    width: 200px;
+    margin: 25px auto;
+    background: none;
+    border: 2px solid $clr-primary;
+    font-size: 16px;
+    color: $clr-primary;
+    cursor: pointer;
+    padding: 10px 0;
+    border-radius: 20px;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: $clr-primary;
+      color: white;
+    }
+  }
+}
+</style>
