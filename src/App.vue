@@ -1,12 +1,15 @@
 <template>
   <h1>Secure Password Generator</h1>
   <hr />
+  <password-generator />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
+import PasswordGenerator from './components/PasswordGenerator.vue'
 
 export default defineComponent({
+  components: { PasswordGenerator },
   name: 'App',
 })
 </script>
@@ -34,13 +37,9 @@ export default defineComponent({
   color: #2c3e50;
   margin-top: 60px;
 
-  h1 {
-    margin-bottom: 30px;
-  }
-
   hr {
     width: 30%;
-    margin: 0 auto;
+    margin: 20px auto;
   }
 }
 </style>
