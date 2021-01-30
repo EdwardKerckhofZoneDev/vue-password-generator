@@ -53,14 +53,14 @@ export default defineComponent({
 
   setup() {
     const passwordLength = ref(16)
+
     const includeSymbols = ref(true)
     const includeNumbers = ref(true)
     const includeLowerCase = ref(true)
     const includeUpperCase = ref(true)
     const excludeAmbitious = ref(false)
-    const savePreferences = ref(false)
 
-    const generatePassword = () => {}
+    const savePreferences = ref(false)
 
     const arrayFromLowToHigh = (low: number, high: number): Array<number> => {
       const arr: number[] = []
@@ -82,6 +82,42 @@ export default defineComponent({
       .concat(arrayFromLowToHigh(58, 62))
       .concat(arrayFromLowToHigh(91, 96))
       .concat(arrayFromLowToHigh(123, 126))
+
+    const generatePassword = () => {
+      let charCodes = LOWERCASE_CHAR_CODES.concat(SYMBOL_CHAR_CODES)
+        .concat(NUMBER_CHAR_CODES)
+        .concat(UPPERCASE_CHAR_CODES)
+        .concat(AMBITIOUS_CHAR_CODES)
+
+      if (!includeSymbols.value)
+        charCodes = charCodes.filter((el) => {
+          return SYMBOL_CHAR_CODES.indexOf(el) < 0
+        })
+
+      if (!includeNumbers.value)
+        charCodes = charCodes.filter((el) => {
+          return NUMBER_CHAR_CODES.indexOf(el) < 0
+        })
+
+      if (!includeUpperCase.value)
+        charCodes = charCodes.filter((el) => {
+          return UPPERCASE_CHAR_CODES.indexOf(el) < 0
+        })
+
+      if (excludeAmbitious.value)
+        charCodes = charCodes.filter((el) => {
+          return AMBITIOUS_CHAR_CODES.indexOf(el) < 0
+        })
+
+      const passwordChars = []
+      for (let i = 0; i < passwordLength.value; i++) {
+        const charCode = charCodes[Math.floor(Math.random() * charCodes.length)]
+        passwordChars.push(String.fromCharCode(charCode))
+      }
+
+      const password = passwordChars.join('')
+      console.log(password)
+    }
 
     return {
       passwordLength,
