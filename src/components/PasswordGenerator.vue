@@ -57,7 +57,16 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, onMounted, ref } from 'vue'
+
+interface Preference {
+  passwordLength: number
+  includeSymbols: boolean
+  includeNumbers: boolean
+  includeLowerCase: boolean
+  includeUpperCase: boolean
+  excludeAmbitious: boolean
+}
 
 export default defineComponent({
   name: 'PasswordGenerator',
@@ -72,6 +81,8 @@ export default defineComponent({
     const includeLowerCase = ref(true)
     const includeUpperCase = ref(true)
     const excludeAmbitious = ref(false)
+
+    const SAVED_NAME = 'selectedPasswordOptions'
 
     const savePreferences = ref(false)
 
@@ -122,6 +133,21 @@ export default defineComponent({
           return AMBITIOUS_CHAR_CODES.indexOf(el) < 0
         })
 
+      if (savePreferences.value) {
+        localStorage.removeItem(SAVED_NAME)
+        localStorage.setItem(
+          SAVED_NAME,
+          JSON.stringify([
+            { passwordLength: passwordLength.value },
+            { includeSymbols: includeSymbols.value },
+            { includeNumbers: includeNumbers.value },
+            { includeLowerCase: includeLowerCase.value },
+            { includeUpperCase: includeUpperCase.value },
+            { excludeAmbitious: excludeAmbitious.value },
+          ]),
+        )
+      }
+
       const passwordChars = []
       for (let i = 0; i < passwordLength.value; i++) {
         const charCode = charCodes[Math.floor(Math.random() * charCodes.length)]
@@ -149,6 +175,33 @@ export default defineComponent({
     const outFocus = () => {
       tooltipText.value = 'Copy to clipboard'
     }
+
+    onMounted(() => {
+      let preferences = localStorage.getItem(SAVED_NAME)
+      if (preferences) {
+        preferences = JSON.parse(preferences)
+        ;(preferences as any).forEach((pref: Preference) => {
+          if (Object.keys(pref)[0] === 'passwordLength') {
+            passwordLength.value = pref.passwordLength
+          }
+          if (Object.keys(pref)[0] === 'includeSymbols') {
+            includeSymbols.value = pref.includeSymbols
+          }
+          if (Object.keys(pref)[0] === 'includeNumbers') {
+            includeNumbers.value = pref.includeNumbers
+          }
+          if (Object.keys(pref)[0] === 'includeLowerCase') {
+            includeLowerCase.value = pref.includeLowerCase
+          }
+          if (Object.keys(pref)[0] === 'includeUpperCase') {
+            includeUpperCase.value = pref.includeUpperCase
+          }
+          if (Object.keys(pref)[0] === 'excludeAmbitious') {
+            excludeAmbitious.value = pref.excludeAmbitious
+          }
+        })
+      }
+    })
 
     return {
       passwordLength,
