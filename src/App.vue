@@ -2,15 +2,17 @@
   <h1>Password Generator</h1>
   <hr />
   <password-generator />
+  <app-footer />
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import PasswordGenerator from './components/PasswordGenerator.vue'
+import AppFooter from './components/Footer.vue'
 
 export default defineComponent({
   name: 'App',
-  components: { PasswordGenerator },
+  components: { PasswordGenerator, AppFooter },
 })
 </script>
 
